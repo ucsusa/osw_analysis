@@ -1,0 +1,22 @@
+name: osw
+channels:
+    - defaults
+    - conda-forge
+dependencies:
+    # Requirements for core model functionality
+    - pip
+    - ipython
+    - jupyterlab
+    - matplotlib
+    - pandas
+    - numpy
+    - scipy
+    - ipykernel
+    - pyarrow
+    - xarray
+    - dask
+    - netCDF4
+    - eccodes
+    - bottleneck
+    - pip:
+      - cfgrib
