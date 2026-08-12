@@ -1,0 +1,11 @@
+configfile: "../config/config.yml"
+
+import os
+from pathlib import Path
+env_file = Path("../.env").resolve()
+from dotenv import load_dotenv
+load_dotenv(str(env_file))
+
+envvars:
+    "ISONE_USERNAME",
+    "ISONE_PASSWORD"
