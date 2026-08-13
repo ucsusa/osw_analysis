@@ -2,10 +2,21 @@ configfile: "../config/config.yml"
 
 import os
 from pathlib import Path
-env_file = Path("../.env").resolve()
 from dotenv import load_dotenv
+env_file = Path("../.env").resolve()
 load_dotenv(str(env_file))
 
 envvars:
     "ISONE_USERNAME",
     "ISONE_PASSWORD"
+
+DATA_DIR = Path("../data/")
+
+rule retrieve_isone_load:
+    params:
+        username = os.environ['ISONE_USERNAME'],
+        password = os.environ['ISONE_PASSWORD']
+    output: 
+        demand_data = DATA_DIR/f"isone_load_{config['start_date']}_{config['end_date']}.csv"
+    script: 
+        "scripts/retrieve_isone_rt_demand.py"
