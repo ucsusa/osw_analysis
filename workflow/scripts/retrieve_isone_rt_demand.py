@@ -1,11 +1,7 @@
 if __name__=="__main__":
     import pandas as pd
-    import numpy as np
     import requests
     import json
-    from datetime import date
-    import os
-    import sys
     from tqdm import tqdm
 
     BASE_URL = "https://webservices.iso-ne.com/api/v1.1"
