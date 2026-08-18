@@ -11,6 +11,7 @@ envvars:
     "ISONE_PASSWORD"
 
 DATA_DIR = Path("../data/")
+RESULTS_DIR = Path("../results/")
 
 rule retrieve_isone_load:
     params:
@@ -56,3 +57,10 @@ rule calculate_net_load:
     script:
         "scripts/calculate_net_load.py"
 
+rule estimate_reliability:
+    input:
+        net_load = DATA_DIR/f"net_hourly_isone_load_{config['start_date']}_{config['end_date']}.csv"
+    output:
+        RESULTS_DIR/"isone_osw_reliability.png"
+    script:
+        "scripts/plot_reliability.py"
