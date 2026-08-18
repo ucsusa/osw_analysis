@@ -26,3 +26,23 @@ rule retrieve_era5:
         archive = DATA_DIR/"era5_download.zip"
     script:
         "scripts/retrieve_era5.py"
+
+rule extract_era5:
+    input:
+        archive = DATA_DIR/"era5_download.zip"
+    output:
+        era5 = DATA_DIR/f"{config['dataset_id']}_{config['start_date']}_{config['end_date']}.csv"
+    run:
+        import zipfile
+        import shutil
+
+        with zipfile.ZipFile(input.archive, 'r') as zf:
+            for member in zf.namelist():
+                if (config['dataset_id'] in member) & ('csv' in member):
+                    source = zf.open(member)
+
+                    target = open(output.era5, 'wb')
+                    with source, target:
+                        shutil.copyfileobj(source, target)
+                else:
+                    print(f'Skipping {member}')
