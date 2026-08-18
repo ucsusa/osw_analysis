@@ -31,5 +31,5 @@ if __name__=="__main__":
         df.set_index('BeginDate', inplace=True)
         frames.append(df)
 
-    full_df = pd.concat(full_frames)
+    full_df = pd.concat(frames)
     full_df.to_csv(snakemake.output.demand_data)
