@@ -20,3 +20,9 @@ rule retrieve_isone_load:
         demand_data = DATA_DIR/f"isone_load_{config['start_date']}_{config['end_date']}.csv"
     script: 
         "scripts/retrieve_isone_rt_demand.py"
+
+rule retrieve_era5:
+    output:
+        archive = DATA_DIR/"era5_download.zip"
+    script:
+        "scripts/retrieve_era5.py"
