@@ -46,3 +46,13 @@ rule extract_era5:
                         shutil.copyfileobj(source, target)
                 else:
                     print(f'Skipping {member}')
+
+rule calculate_net_load:
+    input:
+        demand = DATA_DIR/f"isone_load_{config['start_date']}_{config['end_date']}.csv",
+        era5 = DATA_DIR/f"{config['dataset_id']}_{config['start_date']}_{config['end_date']}.csv"
+    output:
+        net_load = DATA_DIR/f"net_hourly_isone_load_{config['start_date']}_{config['end_date']}.csv"
+    script:
+        "scripts/calculate_net_load.py"
+
