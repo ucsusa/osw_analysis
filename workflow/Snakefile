@@ -13,6 +13,10 @@ envvars:
 DATA_DIR = Path("../data/")
 RESULTS_DIR = Path("../results/")
 
+rule targets:
+    input:
+        RESULTS_DIR/"isone_osw_reliability.png"
+
 rule retrieve_isone_load:
     params:
         username = os.environ['ISONE_USERNAME'],
@@ -64,3 +68,10 @@ rule estimate_reliability:
         RESULTS_DIR/"isone_osw_reliability.png"
     script:
         "scripts/plot_reliability.py"
+
+rule build_dag:
+    input: "Snakefile"
+    output:
+        "dag.png"
+    shell:
+        "snakemake estimate_reliability --dag | dot -Tpng > {output}"

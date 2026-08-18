@@ -22,8 +22,10 @@ dependencies:
     - bottleneck
     - snakemake-minimal
     - atlite
+    - graphviz
     - pip:
       - cfgrib
       - cdsapi
       - tqdm
       - python-dotenv
+      - networkx
