@@ -31,7 +31,7 @@ execute the calculations summarized above. Below is the directed acyclic graph
 
 ## Reproduce the Results
 
-> [!IMPORTANT] Prerequisites
+> [!IMPORTANT]
 > This analysis draws from a couple of different API sources that require account set up.
 > Users must have an account with [ISONE](https://www.iso-ne.com/isoexpress/login?p_p_id=com_liferay_login_web_portlet_LoginPortlet&p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view&_com_liferay_login_web_portlet_LoginPortlet_mvcRenderCommandName=%2Flogin%2Fcreate_account&saveLastPath=false)
 > and an account with [Copernicus](https://cds.climate.copernicus.eu/how-to-api).
