@@ -1,9 +1,11 @@
 name: osw
 channels:
-    - defaults
     - conda-forge
+    - bioconda
+    - nodefaults
 dependencies:
     # Requirements for core model functionality
+    - python == 3.13.14
     - pip
     - ipython
     - jupyterlab
@@ -18,5 +20,12 @@ dependencies:
     - netCDF4
     - eccodes
     - bottleneck
+    - snakemake-minimal
+    - atlite
+    - graphviz
     - pip:
       - cfgrib
+      - cdsapi
+      - tqdm
+      - python-dotenv
+      - networkx

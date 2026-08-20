@@ -1,0 +1,17 @@
+# YYYY-MM-DD
+start_date: '2026-01-23'
+end_date: '2026-02-11'
+
+dataset_id: "reanalysis-era5-single-levels-timeseries"
+
+# point estimate
+longitude: -71.0
+latitude: 40.5
+
+# total wind farm capacity (MW)
+osw_capacity: 3500
+efficiency: 0.7
+
+# reliability thresholds
+Elevated Blackout Risk: 350000
+Higher Blackout Risk: 400000

@@ -1,0 +1,77 @@
+configfile: "../config/config.yml"
+
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+env_file = Path("../.env").resolve()
+load_dotenv(str(env_file))
+
+envvars:
+    "ISONE_USERNAME",
+    "ISONE_PASSWORD"
+
+DATA_DIR = Path("../data/")
+RESULTS_DIR = Path("../results/")
+
+rule targets:
+    input:
+        RESULTS_DIR/"isone_osw_reliability.png"
+
+rule retrieve_isone_load:
+    params:
+        username = os.environ['ISONE_USERNAME'],
+        password = os.environ['ISONE_PASSWORD']
+    output: 
+        demand_data = DATA_DIR/f"isone_load_{config['start_date']}_{config['end_date']}.csv"
+    script: 
+        "scripts/retrieve_isone_rt_demand.py"
+
+rule retrieve_era5:
+    output:
+        archive = DATA_DIR/"era5_download.zip"
+    script:
+        "scripts/retrieve_era5.py"
+
+rule extract_era5:
+    input:
+        archive = DATA_DIR/"era5_download.zip"
+    output:
+        era5 = DATA_DIR/f"{config['dataset_id']}_{config['start_date']}_{config['end_date']}.csv"
+    run:
+        import zipfile
+        import shutil
+
+        with zipfile.ZipFile(input.archive, 'r') as zf:
+            for member in zf.namelist():
+                if (config['dataset_id'] in member) & ('csv' in member):
+                    source = zf.open(member)
+
+                    target = open(output.era5, 'wb')
+                    with source, target:
+                        shutil.copyfileobj(source, target)
+                else:
+                    print(f'Skipping {member}')
+
+rule calculate_net_load:
+    input:
+        demand = DATA_DIR/f"isone_load_{config['start_date']}_{config['end_date']}.csv",
+        era5 = DATA_DIR/f"{config['dataset_id']}_{config['start_date']}_{config['end_date']}.csv"
+    output:
+        net_load = DATA_DIR/f"net_hourly_isone_load_{config['start_date']}_{config['end_date']}.csv"
+    script:
+        "scripts/calculate_net_load.py"
+
+rule estimate_reliability:
+    input:
+        net_load = DATA_DIR/f"net_hourly_isone_load_{config['start_date']}_{config['end_date']}.csv"
+    output:
+        RESULTS_DIR/"isone_osw_reliability.png"
+    script:
+        "scripts/plot_reliability.py"
+
+rule build_dag:
+    input: "Snakefile"
+    output:
+        "dag.png"
+    shell:
+        "snakemake estimate_reliability --dag | dot -Tpng > {output}"
