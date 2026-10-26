@@ -18,7 +18,7 @@ if __name__ == "__main__":
                               index_col='BeginDate'
                               )
 
-    net_load_df = net_load_df.resample('D').sum().loc[:'2026-02-10']
+    net_load_df = net_load_df.resample('D').sum().loc[:snakemake.config['end_date']]
 
     ebr_thresh = snakemake.config['Elevated Blackout Risk']
     hbr_thresh = snakemake.config["Higher Blackout Risk"]
@@ -31,7 +31,7 @@ if __name__ == "__main__":
         ax.fill_between(x = net_load_df.index, y1=ebr_thresh, y2=hbr_thresh, color='gold', alpha=0.5, label='Elevated Blackout Risk')
         ax.fill_between(x = net_load_df.index, y1=hbr_thresh, y2=hbr_thresh+100e3, color='crimson', alpha=0.5, label='Higher Blackout Risk')
 
-        ax.set_ylim(300e3, hbr_thresh+50e3)
+        ax.set_ylim(snakemake.config['y_min'], hbr_thresh+snakemake.config['y_exceed'])
         ax.legend()
 
         plt.savefig(snakemake.output[0])
